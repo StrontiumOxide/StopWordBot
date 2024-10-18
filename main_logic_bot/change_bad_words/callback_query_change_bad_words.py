@@ -84,6 +84,9 @@ async def get_bad_worde_remove(message: tp.Message, state: FSMContext) -> None:
     bad_words.remove(word)
 
     await message.answer(
-        text='Слово <b>"{word}"</b> успешно удалено из списка ☺️',
+        text=f'Слово <b>"{word}"</b> успешно удалено из списка ☺️',
         reply_markup=kb.reply.remove
     )
+
+    await state.clear()
+    
