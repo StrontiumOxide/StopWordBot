@@ -10,8 +10,8 @@ router = Router(name='message_change_bad_words')
 async def start_handler(message: tp.Message) -> None:
     """Функция по обработке команды /change_bad_words"""
 
-    # if str(message.from_user.id) not in [Token(key='ADMIN_ID').find(), Token(key='MY_ID').find()]:
-    #     return
+    if str(message.from_user.id) not in [Token(key='ADMIN_ID').find(), Token(key='MY_ID').find()]:
+        return
 
     text = f'''
 <b>Панель администратора</b> ⚒️

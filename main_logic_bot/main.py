@@ -4,6 +4,7 @@ from utils.commands_bot import set_commands
 from utils.middlewares import CountMiddleware, StopWordGroupMiddleware
 from main_logic_bot.greetings import message_greetings, callback_query_greetings
 from main_logic_bot.change_bad_words import message_change_bad_words, callback_query_change_bad_words
+from main_logic_bot.banning import message_banning
 
 
 async def main_polling(bot: Bot, dp: Dispatcher) -> None:
@@ -22,7 +23,10 @@ async def main_polling(bot: Bot, dp: Dispatcher) -> None:
 
             # Изменение списка с плохими словами
         message_change_bad_words,
-        callback_query_change_bad_words
+        callback_query_change_bad_words,
+
+            # Работа с баном
+        message_banning   
 
     ]
 

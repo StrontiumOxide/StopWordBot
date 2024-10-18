@@ -55,11 +55,13 @@ class StopWordGroupMiddleware(BaseMiddleware):
     """Middleware по удалению запрещенных слов в группах"""
 
     async def __call__(self, handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]], message: Message, data: Dict[str, Any]) -> Any:
-
+        
+            # Проверка на группу/супергруппу
         if message.chat.type not in ['group', 'supergroup']:
             await handler(message, data)
             return
-
+                
+            # Проверка на наличие текста в сообщении
         if not message.text:
             return
         
@@ -67,24 +69,12 @@ class StopWordGroupMiddleware(BaseMiddleware):
 
         for bad_word in bad_words:
             if bad_word in message_text:
-                # await message.delete()
+                await message.delete()
 
-                # try:
-                #     await message.bot.send_message(
-                #         chat_id=message.from_user.id,
-                #         text=f'<i>{message.from_user.full_name}</i>, Вас поймали на спаме в чужом чате!\nВы использовали запрещенное слово: <b>"{bad_word}"</b>'
-                #     )
-                # except (TelegramBadRequest, TelegramForbiddenError):
-                #     pass
-                # finally:
-                #     return
-                await message.answer(
-                    text=f'<i>{message.from_user.full_name}</i>, Вас поймали на спаме в чужом чате ❌\nВы использовали запрещенное слово: <b>"{bad_word}"</b> 🤬'
+                msg = await message.answer(
+                    text=f'<b>{message.from_user.full_name} </b>, <i>Ваше сообщение расценено как спам и поэтому было удалено ❗️</i>'
                 )
-                return
-        else:
-            await message.reply(
-                text='Одобраю ✅'
-            )
+                await asleep(10)
+                await msg.delete()
 
         await handler(message, data)
